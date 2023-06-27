@@ -154,9 +154,10 @@ func (p *ZkevmRpcdProducer) RequestProof(
 // callProverDaemon keeps polling the proverd service to get the requested proof.
 func (p *ZkevmRpcdProducer) callProverDaemon(ctx context.Context, opts *ProofRequestOptions) ([]byte, uint64, error) {
 	var (
-		proof  []byte
-		degree uint64
-		start  = time.Now()
+		proof   []byte
+		degree  uint64
+		start   = time.Now()
+		counter = 0
 	)
 	if err := backoff.Retry(func() error {
 		if ctx.Err() != nil {
@@ -169,7 +170,10 @@ func (p *ZkevmRpcdProducer) callProverDaemon(ctx context.Context, opts *ProofReq
 		}
 
 		if output == nil {
-			log.Info("Proof generating", "height", opts.Height, "time", time.Since(start))
+			if counter%(10/int(proofPollingInterval)) == 0 { // For every 10 second, log the "Proof generating"
+				log.Info("Proof generating", "height", opts.Height, "time", time.Since(start))
+			}
+			counter++
 			return errProofGenerating
 		}
 		proof = common.Hex2Bytes(output.Circuit.Proof[2:])
