@@ -20,7 +20,8 @@ import (
 
 var (
 	errProofGenerating   = errors.New("proof is generating")
-	proofPollingInterval = time.Duration(1) * time.Second
+	backoffInterval      = time.Duration(1)
+	proofPollingInterval = backoffInterval * time.Second
 )
 
 // ZkevmRpcdProducer is responsible for requesting zk proofs from the given proverd endpoint.
@@ -170,7 +171,7 @@ func (p *ZkevmRpcdProducer) callProverDaemon(ctx context.Context, opts *ProofReq
 		}
 
 		if output == nil {
-			if counter%(10/int(proofPollingInterval)) == 0 { // For every 10 second, log the "Proof generating"
+			if counter%(10/int(backoffInterval)) == 0 { // For every 10 second, log the "Proof generating"
 				log.Info("Proof generating", "height", opts.Height, "time", time.Since(start))
 			}
 			counter++
