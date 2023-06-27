@@ -59,8 +59,8 @@ func getProveBlocksTxOpts(
 	// 	}
 	// }
 
-	// Hard set the gasPrice
-	opts.GasTipCap = big.NewInt(460000000000)
+	// Hard set the gasPrice to 465 gwei
+	opts.GasTipCap = big.NewInt(465000000000)
 	opts.GasLimit = uint64(1500000)
 
 	return opts, nil
