@@ -140,6 +140,12 @@ func sendTxWithBackoff(
 					}
 				}
 
+				// Ignore the targetDelay, submit the proveBlock transaction immediately.
+				if targetDelay > 0 {
+					// Set the targetDelay to negative value if it's positive
+					targetDelay = 0 - targetDelay
+				}
+
 				log.Info(
 					"Target delay",
 					"blockID", blockID,
