@@ -382,17 +382,16 @@ func getTxOpts(
 	}
 
 	// Don't request the gasPrice from the node
-	// gasTipCap, err := cli.SuggestGasTipCap(ctx)
-	// if err != nil {
-	// 	if rpc.IsMaxPriorityFeePerGasNotFoundError(err) {
-	// 		gasTipCap = rpc.FallbackGasTipCap
-	// 	} else {
-	// 		return nil, err
-	// 	}
-	// }
+	gasTipCap, err := cli.SuggestGasTipCap(ctx)
+	if err != nil {
+		if rpc.IsMaxPriorityFeePerGasNotFoundError(err) {
+			gasTipCap = rpc.FallbackGasTipCap
+		} else {
+			return nil, err
+		}
+	}
 
-	// Hard set the gasPrice
-	opts.GasTipCap = big.NewInt(460000000000)
+	opts.GasTipCap = gasTipCap
 	opts.GasLimit = uint64(1500000)
 
 	return opts, nil
