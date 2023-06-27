@@ -20,7 +20,7 @@ import (
 
 var (
 	errProofGenerating   = errors.New("proof is generating")
-	proofPollingInterval = 10 * time.Second
+	proofPollingInterval = 1 * time.Second
 )
 
 // ZkevmRpcdProducer is responsible for requesting zk proofs from the given proverd endpoint.
