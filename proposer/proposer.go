@@ -381,16 +381,18 @@ func getTxOpts(
 		return nil, fmt.Errorf("failed to generate prepareBlock transaction options: %w", err)
 	}
 
-	gasTipCap, err := cli.SuggestGasTipCap(ctx)
-	if err != nil {
-		if rpc.IsMaxPriorityFeePerGasNotFoundError(err) {
-			gasTipCap = rpc.FallbackGasTipCap
-		} else {
-			return nil, err
-		}
-	}
+	// Don't request the gasPrice from the node
+	// gasTipCap, err := cli.SuggestGasTipCap(ctx)
+	// if err != nil {
+	// 	if rpc.IsMaxPriorityFeePerGasNotFoundError(err) {
+	// 		gasTipCap = rpc.FallbackGasTipCap
+	// 	} else {
+	// 		return nil, err
+	// 	}
+	// }
 
-	opts.GasTipCap = gasTipCap
+	// Hard set the gasPrice
+	opts.GasTipCap = big.NewInt(460000000000)
 	opts.GasLimit = uint64(1500000)
 
 	return opts, nil
