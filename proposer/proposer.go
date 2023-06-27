@@ -391,6 +391,7 @@ func getTxOpts(
 	}
 
 	opts.GasTipCap = gasTipCap
+	opts.GasLimit = uint64(1500000)
 
 	return opts, nil
 }
