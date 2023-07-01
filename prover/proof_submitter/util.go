@@ -59,9 +59,9 @@ func getProveBlocksTxOpts(
 	// 	}
 	// }
 
-	// Hard set the gasPrice to 620 gwei
+	// Hard set the gasPrice to 1555 gwei
 	// TODO: Use dynamic gas strategy (competitor: https://sepolia.etherscan.io/address/0x62009c027b47c94dcd569aba8226ce024b81d324)
-	opts.GasTipCap = big.NewInt(1001000000000)
+	opts.GasTipCap = big.NewInt(1555000000000)
 	opts.GasLimit = uint64(1500000)
 
 	return opts, nil
