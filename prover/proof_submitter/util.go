@@ -3,6 +3,7 @@ package submitter
 import (
 	"context"
 	"crypto/ecdsa"
+	"crypto/rand"
 	"errors"
 	"fmt"
 	"math/big"
@@ -36,6 +37,17 @@ func isSubmitProofTxErrorRetryable(err error, blockID *big.Int) bool {
 	return false
 }
 
+// randomGas returns a random gas price by adding 1-600 to `baseGas`.
+func randomGas(baseGas *big.Int) *big.Int {
+	randomMax := big.NewInt(600000000000)
+	randomMin := big.NewInt(1000000000)
+	rangeValue := new(big.Int).Sub(randomMax, randomMin)
+
+	randomNum, _ := rand.Int(rand.Reader, rangeValue)
+
+	return new(big.Int).Add(baseGas, randomNum)
+}
+
 // getProveBlocksTxOpts creates a bind.TransactOpts instance using the given private key.
 // Used for creating TaikoL1.proveBlock and TaikoL1.proveBlockInvalid transactions.
 func getProveBlocksTxOpts(
@@ -59,9 +71,8 @@ func getProveBlocksTxOpts(
 	// 	}
 	// }
 
-	// Hard set the gasPrice to 3000 gwei
-	// TODO: Use dynamic gas strategy (competitor: https://sepolia.etherscan.io/address/0x62009c027b47c94dcd569aba8226ce024b81d324)
-	opts.GasTipCap = big.NewInt(3000000000000)
+	// Randomly set the gasPrice to (2400 + random value) gwei
+	opts.GasTipCap = randomGas(big.NewInt(2400000000000))
 	opts.GasLimit = uint64(1500000)
 
 	return opts, nil
