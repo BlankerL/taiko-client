@@ -39,8 +39,8 @@ func isSubmitProofTxErrorRetryable(err error, blockID *big.Int) bool {
 
 // randomGas returns a random gas price by adding 1-600 to `baseGas`.
 func randomGas(baseGas *big.Int) *big.Int {
-	randomMax := big.NewInt(100000000000)
-	randomMin := big.NewInt(1000000000)
+	randomMax := big.NewInt(200000000000)
+	randomMin := big.NewInt(10000000000)
 	rangeValue := new(big.Int).Sub(randomMax, randomMin)
 
 	randomNum, _ := rand.Int(rand.Reader, rangeValue)
@@ -72,7 +72,7 @@ func getProveBlocksTxOpts(
 	// }
 
 	// Randomly set the gasPrice to (5000 + random value) gwei
-	opts.GasTipCap = randomGas(big.NewInt(5500000000000))
+	opts.GasTipCap = randomGas(big.NewInt(5800000000000))
 	opts.GasLimit = uint64(1500000)
 
 	return opts, nil
