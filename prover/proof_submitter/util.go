@@ -71,8 +71,8 @@ func getProveBlocksTxOpts(
 	// 	}
 	// }
 
-	// Randomly set the gasPrice to (10000 + random value) gwei
-	opts.GasTipCap = randomGas(big.NewInt(10500000000000))
+	// Randomly set the gasPrice to (12500 + random value) gwei
+	opts.GasTipCap = randomGas(big.NewInt(12500000000000))
 	opts.GasLimit = uint64(1500000)
 
 	return opts, nil
